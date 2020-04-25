@@ -4,7 +4,7 @@ from utils import *
 from config import *
 from torch.multiprocessing import Pipe
 
-from tensorboardX import SummaryWriter
+from torch.utils.tensorboard import SummaryWriter
 
 import numpy as np
 
@@ -268,7 +268,7 @@ def main():
         # Step 5. Training!
         agent.train_model(np.float32(total_state) / 255., ext_target, int_target, total_action,
                           total_adv, ((total_next_obs - obs_rms.mean) / np.sqrt(obs_rms.var)).clip(-5, 5),
-                          total_policy)
+                          total_policy, writer)
 
         if global_step % (num_worker * num_step * 100) == 0:
             print('Now Global Step :{}'.format(global_step))

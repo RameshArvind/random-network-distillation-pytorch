@@ -77,7 +77,7 @@ class RNDAgent(object):
 
         return intrinsic_reward.data.cpu().numpy()
 
-    def train_model(self, s_batch, target_ext_batch, target_int_batch, y_batch, adv_batch, next_obs_batch, old_policy):
+    def train_model(self, s_batch, target_ext_batch, target_int_batch, y_batch, adv_batch, next_obs_batch, old_policy, writer):
         s_batch = torch.FloatTensor(s_batch).to(self.device)
         target_ext_batch = torch.FloatTensor(target_ext_batch).to(self.device)
         target_int_batch = torch.FloatTensor(target_int_batch).to(self.device)
@@ -132,8 +132,15 @@ class RNDAgent(object):
 
                 entropy = m.entropy().mean()
 
+                writer.write("critic_intrinsic_loss", critic_int_loss.item())
+                writer.write("critic_extrinsic_loss", critic_ext_loss.item())
+                writer.write("entropy_loss", entropy.item())
+                writer.write("actor_loss", actor_loss.item())
+                writer.write("rnd_loss", forward_loss.item())
+
                 self.optimizer.zero_grad()
                 loss = actor_loss + 0.5 * critic_loss - self.ent_coef * entropy + forward_loss
                 loss.backward()
+                writer.write("ppo_loss", loss.item())
                 global_grad_norm_(list(self.model.parameters())+list(self.rnd.predictor.parameters()))
                 self.optimizer.step()

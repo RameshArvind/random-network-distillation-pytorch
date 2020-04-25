@@ -4,7 +4,7 @@ from utils import *
 from config import *
 from torch.multiprocessing import Pipe
 
-from tensorboardX import SummaryWriter
+from torch.utils.tensorboard import SummaryWriter
 
 import numpy as np
 import pickle
