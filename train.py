@@ -16,7 +16,8 @@ def main():
     env_type = default_config['EnvType']
 
     if env_type == 'mario':
-        env = BinarySpaceToDiscreteSpaceEnv(gym_super_mario_bros.make(env_id), COMPLEX_MOVEMENT)
+        # env = BinarySpaceToDiscreteSpaceEnv(gym_super_mario_bros.make(env_id), COMPLEX_MOVEMENT)
+        pass
     elif env_type == 'atari':
         env = gym.make(env_id)
     else:
@@ -72,7 +73,8 @@ def main():
     if default_config['EnvType'] == 'atari':
         env_type = AtariEnvironment
     elif default_config['EnvType'] == 'mario':
-        env_type = MarioEnvironment
+        # env_type = MarioEnvironment
+        pass
     else:
         raise NotImplementedError
 
